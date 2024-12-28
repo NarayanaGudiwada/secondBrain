@@ -1,7 +1,7 @@
-import { TagSet } from "mongoose";
 import ContentModel from "../models/ContentModel";
 import { Content } from "../ValidationSchema/ContentTypes";
 import TagModel from "../models/TagModel";
+import { SBError } from "../utils/SBError";
 
 export const createContent = async (content: Content, userId: string) => {
     const tags: string[] = content.tags;
@@ -16,9 +16,22 @@ export const createContent = async (content: Content, userId: string) => {
     });
 }
 
-export const getAllContent = async(userId: string) => {
-    const contents = await ContentModel.find({userId}).populate('tags', {title:1, _id:0});
+export const getAllContent = async (userId: string) => {
+    const contents = await ContentModel.find({ userId }).populate('tags', { title: 1, _id: 0 });
     return contents;
+}
+
+export const deleteContentById = async (contentId: string, userId: string) => {
+    const content = await getContentById(contentId, userId);
+    if (!content) {
+        throw new SBError(`Trying to delete a document you don’t own`, 403);
+    }
+    await content.deleteOne();
+}
+
+export const getContentById = async (contentId: string, userId: string) => {
+    const content = await ContentModel.findOne({ userId: userId, _id: contentId });
+    return content;
 }
 
 export const createTag = async (tagTitle: string) => {
