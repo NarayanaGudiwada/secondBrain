@@ -1,5 +1,5 @@
 import { createUser, findUserByUserName } from "../service/UserService";
-import { comparePassword } from "../utils/passwordUtils";
+import { comparePassword, generateJWTToken, hashPassword } from "../utils/authUtils";
 import { UserSchema } from "../ValidationSchema/UserSchema";
 
 //@ts-ignore
@@ -13,15 +13,17 @@ export const signup = async (req, res) => {
         }
 
         //@ts-ignore
-        const userExists = await findUserByUserName(data.username);
+        const user = await findUserByUserName(data.username);
 
-        if (userExists) {
+        if (user) {
             return res.status(403).json({
                 message: 'User already exists with this userName'
             });
         }
+        const hashedPassword = await hashPassword(data.password);
+        console.log(hashedPassword);
         // @ts-ignore
-        await createUser(data.username, data.password);
+        await createUser(data.username, hashedPassword);
 
         res.status(200).json({
             message: 'User created successfully'
@@ -46,15 +48,16 @@ export const signin = async (req, res) => {
         }
 
         //@ts-ignore
-        const userExists = await findUserByUserName(data.username);
+        const user = await findUserByUserName(data.username);
 
-        if (!userExists) {
+        if (!user) {
             return res.status(403).json({
                 message: 'User does not exists with this userName'
             });
         }
 
-        const passwordMatch = await comparePassword(userExists.password, data.password);
+        const passwordMatch = await comparePassword(user.password, data.password);
+
 
         if (!passwordMatch) {
             return res.status(403).json({
@@ -62,12 +65,14 @@ export const signin = async (req, res) => {
             });
         }
 
-        res.status(200).json({
+        //@ts-ignore
+        const jwtToken = await generateJWTToken(user._id);
+        res.status(200).cookie('token', jwtToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }).json({
             message: 'User logged in successfully'
         });
-    } catch{
+    } catch {
         res.status(500).json({
-            'message' : 'Internal server error'
+            'message': 'Internal server error'
         })
     }
 }
