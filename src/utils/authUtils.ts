@@ -17,7 +17,6 @@ export const comparePassword = async (passwordHash: string, password: string): P
     } catch (error) {
         throw new Error('Error while comparing passwords');
     }
-
 }
 
 export const generateJWTToken = async (userId: string): Promise<string> => {
