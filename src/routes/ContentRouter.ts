@@ -3,8 +3,7 @@ import { addContent, deleteContent, getContent } from "../controllers/ContentCon
 
 export const contentRouter = Router();
 
-contentRouter.post("/",addContent);
-
-contentRouter.get("/",getContent);
-
-contentRouter.delete("/",deleteContent);
+contentRouter
+    .post("/", addContent)
+    .get("/", getContent)
+    .delete("/", deleteContent);
