@@ -6,6 +6,6 @@ const UserSchema = new Schema({
     password: {type: String, required: true}
 });
 
-const UserModel  = model('User', UserSchema);
+const UserModel  = model('Users', UserSchema);
 
 export default UserModel;

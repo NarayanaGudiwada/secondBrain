@@ -1,0 +1,1 @@
+export const contentTypes : string[] = ["document", "tweet", "youtube", "link"];
