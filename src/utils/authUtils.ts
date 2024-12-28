@@ -21,10 +21,15 @@ export const comparePassword = async (passwordHash: string, password: string): P
 }
 
 export const generateJWTToken = async (userId: string): Promise<string> => {
-
     // @ts-ignore
     const token = jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '1d' });
     return token;
+}
+
+export const decodeToken = (token: string) => {
+    //@ts-ignore
+    const decodedValue = jwt.verify(token, process.env.JWT_SECRET);
+    return decodedValue;
 }
 
 

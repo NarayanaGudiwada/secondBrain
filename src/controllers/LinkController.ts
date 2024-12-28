@@ -1,9 +1,9 @@
-export const shareLink = async (req: Request, res: Response) => {//
-    // @ts-ignore
+import { Request, Response } from "express";
+
+export const shareLink = async (req: Request, res: Response) => {
     res.send('shareLink');
 }
 
-export const accessLink = async (req: Request, res: Response) => {//
-    //@ts-ignore
+export const accessLink = async (req: Request, res: Response) => {
     res.send('accessLink');
 }
