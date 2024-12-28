@@ -16,6 +16,11 @@ export const createContent = async (content: Content, userId: string) => {
     });
 }
 
+export const getAllContent = async(userId: string) => {
+    const contents = await ContentModel.find({userId}).populate('tags', {title:1, _id:0});
+    return contents;
+}
+
 export const createTag = async (tagTitle: string) => {
     let tag = await getTag(tagTitle);
     if (!tag) {

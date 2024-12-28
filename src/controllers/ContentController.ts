@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { ContentSchema } from "../ValidationSchema/ContentTypes";
-import { createContent } from "../service/ContentService";
+import { createContent, getAllContent } from "../service/ContentService";
 
 export const addContent = async (req: Request, res: Response) => {
     const { success, data, error } = ContentSchema.safeParse(req.body);
@@ -18,7 +18,10 @@ export const addContent = async (req: Request, res: Response) => {
 }
 
 export const getContent = async (req: Request, res: Response) => {
-    res.send('getContent');
+    //@ts-ignore
+    const content = await getAllContent(req.userId);
+
+    res.status(200).json({content});
 }
 
 export const deleteContent = async (req: Request, res: Response) => {
