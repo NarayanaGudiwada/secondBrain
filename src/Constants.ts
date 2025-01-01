@@ -1,1 +1,1 @@
-export const contentTypes : string[] = ["document", "tweet", "youtube", "link"];
+export const contentTypes : string[] = ["document", "tweet", "youtube", "others"];

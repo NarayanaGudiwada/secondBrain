@@ -3,7 +3,8 @@ import { z } from 'zod';
 export const UserSchema = z.object({
     username: z.string({required_error: 'username is required'})
         .min(3, { message: "username should be a minimum of 3 characters" })
-        .max(10, { message: "username should be a maximum of 10 characters" }),
+        .max(10, { message: "username should be a maximum of 10 characters" })
+        .email({message: "username should be valid email"}),
     password: z.string({required_error: 'password is required'})
         .min(8, { message: "password should be a minimum of 8 characters" })
         .max(20, { message: "password should be a maximum of 20 characters" })
